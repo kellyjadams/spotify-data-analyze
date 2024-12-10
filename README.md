@@ -15,10 +15,10 @@ conda activate spotify-env
 
 3. **Setup:**
    - Create an application on the [Spotify Developer Dashboard](https://developer.spotify.com/dashboard/applications)
-    - App Name
-    - App description
-    - Redirect URIs: `http://localhost:8080`
-    - Which API/SDKs are you planning to use? Check `Web API`
+      - App Name
+      - App description
+      - Redirect URIs: `http://localhost:8080`
+      - Which API/SDKs are you planning to use? Check `Web API`
    - Set up a Redirect URI in your application settings; this is required for user authentication.
    - Get Client ID, Client Secret and Redirect URL to put into your file.
 
