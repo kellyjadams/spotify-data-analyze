@@ -1,66 +1,64 @@
 import os
+from spotipy.oauth2 import SpotifyOAuth
 import spotipy
 from collections import Counter
-from spotipy.oauth2 import SpotifyOAuth
+from google.cloud import bigquery
 
-import os
+# --- Load Secrets from Environment Variables ---
+CLIENT_ID = os.getenv('SPOTIFY_CLIENT_ID')
+CLIENT_SECRET = os.getenv('SPOTIFY_CLIENT_SECRET')
+REDIRECT_URI = os.getenv('SPOTIFY_REDIRECT_URI')
 
-# Load credentials from a text file
-def load_credentials(file_path):
-    credentials = {}
-    with open(file_path, 'r') as f:
-        for line in f:
-            key, value = line.strip().split('=')
-            credentials[key] = value
-    return credentials
+GCP_PROJECT = os.getenv('GCP_PROJECT')
+BQ_DATASET = os.getenv('BQ_DATASET')
+BQ_TABLE = os.getenv('BQ_TABLE')
 
-# Load credentials
-creds = load_credentials('spotify_credentials.txt')
-
-# Set secret info
-CLIENT_ID = creds['CLIENT_ID']
-CLIENT_SECRET = creds['CLIENT_SECRET']
-REDIRECT_URI = creds['REDIRECT_URI']
-
-# Set time frame
+# --- Set Time Frame ---
 time_frame = 'long_term'
 
-# Define the scope
-scope = 'user-top-read'
-
-# Initialize Spotify client
+# --- Initialize Spotify Client ---
 sp = spotipy.Spotify(auth_manager=SpotifyOAuth(
     client_id=CLIENT_ID,
     client_secret=CLIENT_SECRET,
     redirect_uri=REDIRECT_URI,
-    scope=scope
+    scope='user-top-read'
 ))
 
-# Top 10 Songs
-results = sp.current_user_top_tracks(limit=10, time_range=time_frame)  # Options: short_term, medium_term, long_term
+# --- Get Top Tracks ---
+top_tracks = sp.current_user_top_tracks(limit=10, time_range=time_frame)
+track_list = [f"{track['name']} by {', '.join(artist['name'] for artist in track['artists'])}" for track in top_tracks['items']]
 
-# Display results
-print("Your Top 10 Songs:")
-for idx, track in enumerate(results['items']):
-    print(f"{idx + 1}: {track['name']} by {', '.join(artist['name'] for artist in track['artists'])}")
-
-# Top 5 Artists
+# --- Get Top Artists ---
 top_artists = sp.current_user_top_artists(limit=5, time_range=time_frame)
-print("\nYour Top 5 Artists:")
-for idx, artist in enumerate(top_artists['items']):
-    print(f"{idx + 1}: {artist['name']}")
+artist_list = [artist['name'] for artist in top_artists['items']]
 
-# Total Listening Time (Top Tracks)
-top_tracks = sp.current_user_top_tracks(limit=50, time_range=time_frame)
-total_time_ms = sum(track['duration_ms'] for track in top_tracks['items'])
+# --- Calculate Total Listening Time ---
+all_tracks = sp.current_user_top_tracks(limit=50, time_range=time_frame)
+total_time_ms = sum(track['duration_ms'] for track in all_tracks['items'])
 total_time_minutes = total_time_ms / (1000 * 60)
-print(f"\nEstimated Total Listening Time for Top Tracks: {total_time_minutes:.2f} minutes")
 
-# Top Genres
+# --- Count Genres ---
 genres = []
 for artist in top_artists['items']:
     genres.extend(artist['genres'])
 genre_counts = Counter(genres)
-print("\nYour Top Genres:")
-for genre, count in genre_counts.most_common(5):
-    print(f"{genre}: {count} artists")
+top_genres = [genre for genre, _ in genre_counts.most_common(5)]
+
+# --- Prepare BigQuery Row ---
+row = {
+    "time_frame": time_frame,
+    "top_tracks": track_list,
+    "top_artists": artist_list,
+    "top_genres": top_genres,
+    "estimated_minutes_listened": round(total_time_minutes, 2)
+}
+
+# --- Send to BigQuery ---
+bq_client = bigquery.Client(project=GCP_PROJECT)
+table_id = f"{GCP_PROJECT}.{BQ_DATASET}.{BQ_TABLE}"
+
+errors = bq_client.insert_rows_json(table_id, [row])
+if errors:
+    print("Error inserting into BigQuery:", errors)
+else:
+    print("Data successfully inserted into BigQuery")
