@@ -1,16 +1,42 @@
 # Spotify Listening Logger (Cloud Run + BigQuery)
 
-This project logs my currently playing Spotify track **every minute** using a Python app deployed on **Google Cloud Run**. The data is streamed into **BigQuery**, enabling powerful real-time and historical analysis of your listening habits.
+This is a personal data project to demonstrate my **data engineering** and **analytics engineering** skills. It automatically logs my Spotify listening history every minute using a **Python app deployed on Google Cloud Run**, storing the data in **BigQuery** for analysis and dashboarding.
 
 ---
 
-## Features
+## Why I Built This
 
-- Polls Spotify every minute to capture now-playing tracks
-- Writes rich metadata (track, artist, genre, popularity, etc.) to BigQuery
-- Secure credentials via environment variables or GitHub Secrets
-- Deployable via Cloud Run and GitHub Actions (CI/CD)
-- Ready for Looker Studio dashboards or custom analytics
+I wanted to explore how to:
+
+- Build a serverless data pipeline with **Cloud Run**, **Docker**, and **GitHub Actions**
+- Manage secrets securely using `.env` and GitHub Secrets
+- Orchestrate updates using **Cloud Scheduler**
+- Structure data for analysis in **BigQuery**
+- Design pipelines that can scale and support real-time insights
+
+This project combines core cloud and analytics engineering tools to build something end-to-end—from ingestion to visualization.
+
+---
+
+## Key Features
+
+- Polls Spotify every minute for now-playing tracks
+- Logs detailed track metadata: artist, album, genre, popularity, and more
+- Streams data into BigQuery for historical and real-time analysis
+- Built with a containerized Python app using Flask
+- CI/CD enabled via GitHub Actions
+- Ready for Looker Studio dashboards or custom SQL analytics
+
+---
+
+## Technical Skills Demonstrated
+
+- **Python** for API ingestion and transformation
+- **Cloud Run + Docker** for serverless deployment
+- **GitHub Actions** for CI/CD automation
+- **BigQuery** for cloud-native analytics and schema design
+- **Cloud Scheduler** for orchestrated polling
+- **Environment variable management** for secret handling
 
 ---
 
@@ -34,7 +60,7 @@ spotify-data-analyze/
 
 ## Environment Variables
 
-Create a `.env` file in the root with:
+Create a `.env` file in the root:
 
 ```env
 SPOTIPY_CLIENT_ID=your-client-id
@@ -46,7 +72,7 @@ BQ_DATASET=spotify_data
 BQ_TABLE=log_tracks
 ```
 
-> Secrets are injected into Cloud Run using `--set-env-vars`
+> These are injected into Cloud Run during deployment using `--set-env-vars`.
 
 ---
 
@@ -57,24 +83,24 @@ cd cloud/playback
 ./deploy.sh
 ```
 
-> This builds a Docker image and deploys it to Cloud Run using the variables from `.env`.
+> This builds the Docker image and deploys the app to Cloud Run using your `.env` variables.
 
 ---
 
-## Schedule with Cloud Scheduler
+## Automation with Cloud Scheduler
 
-Use Google Cloud Scheduler to trigger your deployed URL every 1 minute:
+Use **Google Cloud Scheduler** to trigger the endpoint every minute:
 
 - Method: `GET`
-- Auth: `Unauthenticated`
 - URL: `https://your-cloud-run-url/`
+- Auth: `Unauthenticated`
 - Frequency: `* * * * *`
 
 ---
 
 ## BigQuery Table Schema
 
-Make sure your table `log_tracks` includes:
+The destination table should include:
 
 | Field         | Type      | Mode     |
 |---------------|-----------|----------|
@@ -87,20 +113,11 @@ Make sure your table `log_tracks` includes:
 | popularity    | INTEGER   | NULLABLE |
 | explicit      | BOOLEAN   | NULLABLE |
 
-> Use `create-bigquery-table.py` to create the schema (optional).
-
----
-
-## Analysis
-
-> Work in progress 
+> You can use `create-bigquery-table.py` to create this table.
 
 ---
 
 ## Roadmap
 
-- [ ] Create a Cloud Function to compute daily/weekly summaries
-- [ ] Stream processed data into a Looker Studio dashboard
-
----
-
+- [ ] Add Cloud Function to summarize weekly trends
+- [ ] Build a Looker Studio dashboard
