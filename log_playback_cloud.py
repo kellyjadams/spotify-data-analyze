@@ -52,7 +52,7 @@ def log_currently_playing():
         }
 
         client = bigquery.Client()
-        table_ref = client.dataset(DATASET_ID).table(TABLE_ID)
+        table_ref = client.dataset(BQ_DATASET).table(BQ_TABLE)
         errors = client.insert_rows_json(table_ref, [log])
 
         if errors:
