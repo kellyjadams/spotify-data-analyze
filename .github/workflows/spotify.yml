@@ -1,9 +1,15 @@
 name: Spotify Data Pipeline
 
 on:
-  workflow_dispatch:  # Manual trigger
+  workflow_dispatch:        # Manual trigger via GitHub UI
   schedule:
-    - cron: '0 16 * * *'  # Run daily at 4 PM UTC
+    - cron: '0 16 * * *'     # Run every day at 4PM UTC
+  push:
+    branches:
+      - ci-github-secrets    # Trigger on pushes to your dev branch
+  pull_request:
+    branches:
+      - main                 # Trigger when PR targets main
 
 jobs:
   run-script:
