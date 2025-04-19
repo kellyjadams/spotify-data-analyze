@@ -1,3 +1,4 @@
 flask
 spotipy
 google-cloud-bigquery
+python-dotenv
