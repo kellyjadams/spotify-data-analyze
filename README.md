@@ -93,33 +93,7 @@ Make sure your table `log_tracks` includes:
 
 ## Analysis
 
-You can use BigQuery to:
-
-- Deduplicate rows into unique listens using `LAG()` + `TIMESTAMP_DIFF()`
-- Group by genre, artist, or time of day
-- Feed data into Looker Studio dashboards
-
-Example query for unique listens:
-
-```sql
-WITH logs AS (
-  SELECT
-    track,
-    TIMESTAMP_SECONDS(CAST(timestamp AS INT64)) AS played_at,
-    LAG(TIMESTAMP_SECONDS(CAST(timestamp AS INT64))) OVER (
-      PARTITION BY track ORDER BY TIMESTAMP_SECONDS(CAST(timestamp AS INT64))
-    ) AS prev_played_at
-  FROM `your_project.spotify_data.log_tracks`
-)
-SELECT
-  track,
-  COUNTIF(
-    prev_played_at IS NULL OR TIMESTAMP_DIFF(played_at, prev_played_at, MINUTE) > 2
-  ) AS unique_listens
-FROM logs
-GROUP BY track
-ORDER BY unique_listens DESC
-```
+> Work in progress 
 
 ---
 
@@ -130,7 +104,3 @@ ORDER BY unique_listens DESC
 
 ---
 
-## ✨ Credit
-
-Built by [your name or handle] — a real-time, cloud-native music nerd 🎿
-```
