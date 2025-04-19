@@ -34,4 +34,5 @@ jobs:
 
       - name: Run Spotify Script
         run: |
-          GOOGLE_APPLICATION_CREDENTIALS="gcp_key.json" python spotify_script.py
+          GOOGLE_APPLICATION_CREDENTIALS="gcp_key.json" python spotify_to_bigquery.py
+        
