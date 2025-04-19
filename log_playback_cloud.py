@@ -20,16 +20,16 @@ def log_currently_playing():
     BQ_DATASET = os.getenv("BQ_DATASET")
     BQ_TABLE = os.getenv("BQ_TABLE")
 
-    scope = 'user-read-currently-playing'
-    sp = spotipy.Spotify(auth_manager=SpotifyOAuth(
+    auth_manager = SpotifyOAuth(
         client_id=CLIENT_ID,
         client_secret=CLIENT_SECRET,
         redirect_uri=REDIRECT_URI,
-        scope=scope
-    ))
-    
+        scope='user-read-currently-playing'
+    )
+
     auth_manager.refresh_access_token(REFRESH_TOKEN)
     sp = spotipy.Spotify(auth_manager=auth_manager)
+
     # Get current playback
     track = sp.currently_playing()
 
