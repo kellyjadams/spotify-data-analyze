@@ -1,0 +1,43 @@
+name: Deploy to Cloud Run
+
+on:
+  push:
+    branches:
+      - main  # Or ci-github-secrets if you're not ready to merge
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    env:
+      PROJECT_ID: ${{ secrets.GCP_PROJECT }}
+      REGION: us-central1
+      SERVICE_NAME: spotify-pipeline
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v3
+
+      - name: Set up Google Cloud SDK
+        uses: google-github-actions/setup-gcloud@v1
+        with:
+          project_id: ${{ secrets.GCP_PROJECT }}
+          service_account_key: ${{ secrets.GCP_KEY_JSON }}
+
+      - name: Authenticate Docker
+        run: gcloud auth configure-docker
+
+      - name: Build and push Docker image
+        run: |
+          docker build -t gcr.io/${{ env.PROJECT_ID }}/${{ env.SERVICE_NAME }} .
+          docker push gcr.io/${{ env.PROJECT_ID }}/${{ env.SERVICE_NAME }}
+
+      - name: Deploy to Cloud Run
+        run: |
+          gcloud run deploy ${{ env.SERVICE_NAME }} \
+            --image gcr.io/${{ env.PROJECT_ID }}/${{ env.SERVICE_NAME }} \
+            --platform managed \
+            --region ${{ env.REGION }} \
+            --allow-unauthenticated \
+            --set-env-vars "SPOTIFY_CLIENT_ID=${{ secrets.SPOTIFY_CLIENT_ID }},SPOTIFY_CLIENT_SECRET=${{ secrets.SPOTIFY_CLIENT_SECRET }},SPOTIFY_REDIRECT_URI=${{ secrets.SPOTIFY_REDIRECT_URI }},GCP_PROJECT=${{ secrets.GCP_PROJECT }},BQ_DATASET=${{ secrets.BQ_DATASET }},BQ_TABLE=${{ secrets.BQ_TABLE }}"
