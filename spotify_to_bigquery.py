@@ -1,14 +1,15 @@
+# spotify_to_bigquery.py
 from flask import Flask
 import os
-from spotipy.oauth2 import SpotifyOAuth
 import spotipy
-from collections import Counter
+from spotipy.oauth2 import SpotifyOAuth
 from google.cloud import bigquery
+from collections import Counter
 
 app = Flask(__name__)
 
 @app.route("/")
-def run_spotify_pipeline():
+def run_pipeline():
     CLIENT_ID = os.getenv('SPOTIFY_CLIENT_ID')
     CLIENT_SECRET = os.getenv('SPOTIFY_CLIENT_SECRET')
     REDIRECT_URI = os.getenv('SPOTIFY_REDIRECT_URI')
@@ -49,11 +50,13 @@ def run_spotify_pipeline():
         "estimated_minutes_listened": round(total_time_minutes, 2)
     }
 
-    bq_client = bigquery.Client(project=GCP_PROJECT)
+    client = bigquery.Client(project=GCP_PROJECT)
     table_id = f"{GCP_PROJECT}.{BQ_DATASET}.{BQ_TABLE}"
-    errors = bq_client.insert_rows_json(table_id, [row])
+    errors = client.insert_rows_json(table_id, [row])
 
     if errors:
         return {"status": "error", "details": errors}, 500
-    else:
-        return {"status": "success", "inserted": row}, 200
+    return {"status": "success", "inserted": row}, 200
+
+if __name__ == "__main__":
+    app.run(host="0.0.0.0", port=int(os.environ.get("PORT", 8080)))
