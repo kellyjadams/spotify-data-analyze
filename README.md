@@ -1,5 +1,7 @@
 # spotify-data-analyze
 
+> Currently a work in progress
+
 ## Environment
 
 ```bash
@@ -25,11 +27,19 @@ conda activate spotify-env
 4. **Authentication:**
    - Use Spotipy's `SpotifyOAuth` for user authentication.
    - Define the necessary scopes (e.g. `user-top-read`) based on the data you want to see.
-   - Add in Client ID, Client Secret and Redirect URL information. 
+   - Add in Client ID, Client Secret and Redirect URL information.
+
+# Deploy
+
+To deploy the latest version:
+
+```bash
+./scripts/deploy.sh
+```
 
 ## File
 
-The file [`connect_api.py`](./connect_api.py) currently gets the top 10 artists, top 10 songs, top genres and total listening time for this data.
+
 
 ## Documentation
 
