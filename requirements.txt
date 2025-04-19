@@ -1,0 +1,3 @@
+flask
+spotipy
+google-cloud-bigquery
