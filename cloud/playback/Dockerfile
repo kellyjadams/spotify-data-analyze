@@ -14,4 +14,4 @@ RUN pip install --no-cache-dir -r requirements.txt
 EXPOSE 8080
 
 # Run the app
-CMD ["python", "log_playback_cloud.py"]
+CMD ["python", "main.py"]
