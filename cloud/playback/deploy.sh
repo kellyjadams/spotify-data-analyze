@@ -1,7 +1,7 @@
 #!/bin/bash
 
-# Load environment variables from .env
-source .env
+# Load environment variables from the root-level .env
+source ../../.env
 
 SERVICE_NAME="spotify-playback-tracker"
 REGION="us-central1"
