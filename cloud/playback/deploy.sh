@@ -1,16 +1,16 @@
 #!/bin/bash
 
-# Load env vars from .env file
-source .env
+# Load environment variables from the root-level .env
+source ../../.env
 
-SERVICE_NAME="spotify-pipeline"
+SERVICE_NAME="spotify-playback-tracker"
 REGION="us-central1"
 IMAGE="gcr.io/$GCP_PROJECT/$SERVICE_NAME"
 
 # Build Docker image
 gcloud builds submit --tag $IMAGE
 
-# Deploy to Cloud Run with all Spotipy + GCP + BigQuery environment variables
+# Deploy to Cloud Run
 gcloud run deploy $SERVICE_NAME \
   --image $IMAGE \
   --platform managed \
