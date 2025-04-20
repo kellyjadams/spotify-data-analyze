@@ -56,7 +56,6 @@ This project brings together core **cloud** and **analytics engineering** tools 
 
 ```
 spotify-data-analyze/
-spotify-data-analyze/
 ├── analysis/
 │   ├── queries/
 │   │   ├── all_artists.sql
