@@ -8,6 +8,10 @@ This is a personal data project focusing on **data engineering** and **analytics
 
 It automatically logs my Spotify listening history every minute and stores it in **BigQuery** for analysis.
 
+Links: 
+- [Blog Post](https://www.kellyjadams.com/post/spotify-listening-logger)
+- [Looker Studio Dashboard](https://lookerstudio.google.com/reporting/e2f6d5f3-c3cf-4687-ba01-d3a47a15998c)
+
 ## Why I Built This
 
 At the end of the year, I want to compare what's logged in BigQuery with my annual **Spotify Wrapped**.
@@ -95,6 +99,4 @@ cd cloud/playback
 I automated ingestion, by setting up a **Cloud Scheduler** job to hit the app endpoint every minute.
 
 The data is stored in a **BigQuery** table with fields like `track`, `artist`, `genre`, and `popularity`. See `create_bigquery_table.py` for schema setup.
-
-> Full setup instructions and configuration details are available in the [blog post](#).
 
