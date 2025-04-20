@@ -1,23 +1,28 @@
 # Spotify Listening Logger (Cloud Run + BigQuery)
 
-This is a personal data project to demonstrate my **data engineering** and **analytics engineering** skills. It automatically logs my Spotify listening history every minute using a **Python app deployed on Google Cloud Run**, storing the data in **BigQuery** for analysis and dashboarding.
 
-This project primarily demonstrates data engineering skills, with a strong emphasis on ETL, orchestration, and cloud infrastructure. It also overlaps with analytics engineering by designing data that's ready for analysis and dashboarding.
+This is a personal data project focusing on **data engineering** and **analytics engineering** skills.
 
+- **Data engineering**: ETL pipelines, orchestration, and cloud infrastructure  
+- **Analytics engineering**: **BigQuery SQL**, data modeling, building analysis-ready datasets
+
+It automatically logs my Spotify listening history every minute and stores it in **BigQuery** for analysis.
 
 ---
 
 ## Why I Built This
 
+At the end of the year, I want to compare what's logged in BigQuery with my annual **Spotify Wrapped**.
+
 I wanted to explore how to:
 
-- Build a serverless data pipeline with **Cloud Run**, **Docker**, and **GitHub Actions**
-- Manage secrets securely using `.env` and GitHub Secrets
-- Orchestrate updates using **Cloud Scheduler**
-- Structure data for analysis in **BigQuery**
-- Design pipelines that can scale and support real-time insights
+- Build a serverless data pipeline using **Cloud Run**, **Docker**, and **GitHub Actions**
+- Manage secrets securely with `.env` files and **GitHub Secrets**
+- Schedule and orchestrate updates using **Cloud Scheduler**
+- Structure and transform data for analysis in **BigQuery**
+- Design pipelines that are scalable and support near real-time insights
 
-This project combines core cloud and analytics engineering tools to build something end-to-end—from ingestion to visualization.
+This project brings together core **cloud** and **analytics engineering** tools to build something end-to-end—from ingestion to analysis.
 
 ---
 
@@ -34,15 +39,14 @@ This project combines core cloud and analytics engineering tools to build someth
 
 ## Technical Skills
 
-
-
-- Data Pipeline Design: Built a serverless ETL pipeline from Spotify API to BigQuery using Python and Cloud Run
-- Cloud-Native ETL: Extracted, transformed, and loaded data on a schedule using Cloud Scheduler and containerized Flask app
-- Python scripting: Wrote ingestion and transformation logic using the Spotipy library
-- BigQuery: Designed table schema and streamed structured data for analysis
-- Docker + Cloud Run: Packaged and deployed the app as a scalable container
-- CI/CD: Automated deployment via GitHub Actions for reproducibility and version control
-- Environment variable management: Handled secrets securely using .env and GitHub Secrets
+- **Data Pipeline Design**: Built a serverless ETL pipeline from Spotify API to BigQuery using Python and Cloud Run
+- **Cloud-Native ETL**: Extracted, transformed, and loaded data on a schedule using Cloud Scheduler and containerized Flask app
+- **Python**: Wrote ingestion and transformation logic using the `Spotipy` library
+- **REST API**: Created a lightweight endpoint to trigger ingestion using Flask
+- **BigQuery**: Designed table schema and streamed structured data for analysis
+- **Docker + Cloud Run**: Packaged and deployed the app as a scalable container
+- **CI/CD**: Automated deployment via GitHub Actions for reproducibility and version control
+- **Environment variable management**: Handled secrets securely using `.env` and GitHub Secrets
 
 ---
 
@@ -50,6 +54,7 @@ This project combines core cloud and analytics engineering tools to build someth
 
 ```
 spotify-data-analyze/
+├── analysis/
 ├── cloud/
 │   └── playback/
 │       ├── main.py
@@ -67,66 +72,21 @@ spotify-data-analyze/
 
 ---
 
-## Environment Variables
 
-Create a `.env` file in the root:
+## Environment & Deployment
 
-```env
-SPOTIPY_CLIENT_ID=your-client-id
-SPOTIPY_CLIENT_SECRET=your-client-secret
-SPOTIPY_REDIRECT_URI=http://127.0.0.1:8888/callback
-SPOTIPY_REFRESH_TOKEN=your-refresh-token
-GCP_PROJECT=your-gcp-project-id
-BQ_DATASET=spotify_data
-BQ_TABLE=log_tracks
-```
+This project uses a `.env` file for Spotify and GCP credentials. These variables are injected during Cloud Run deployment.
 
-> These are injected into Cloud Run during deployment using `--set-env-vars`.
-
----
-
-## Deployment (Manual)
+I deployed the app manually using:
 
 ```bash
 cd cloud/playback
 ./deploy.sh
 ```
 
-> This builds the Docker image and deploys the app to Cloud Run using your `.env` variables.
+I automated ingestion, by setting up a **Cloud Scheduler** job to hit the app endpoint every minute.
 
----
+The data is stored in a **BigQuery** table with fields like `track`, `artist`, `genre`, and `popularity`. See `create_bigquery_table.py` for schema setup.
 
-## Automation with Cloud Scheduler
+> Full setup instructions and configuration details are available in the [blog post](#).
 
-Use **Google Cloud Scheduler** to trigger the endpoint every minute:
-
-- Method: `GET`
-- URL: `https://your-cloud-run-url/`
-- Auth: `Unauthenticated`
-- Frequency: `* * * * *`
-
----
-
-## BigQuery Table Schema
-
-The destination table should include:
-
-| Field         | Type      | Mode     |
-|---------------|-----------|----------|
-| timestamp     | FLOAT     | NULLABLE |
-| track         | STRING    | NULLABLE |
-| artists       | STRING    | NULLABLE |
-| album         | STRING    | NULLABLE |
-| duration_ms   | INTEGER   | NULLABLE |
-| genre         | STRING    | NULLABLE |
-| popularity    | INTEGER   | NULLABLE |
-| explicit      | BOOLEAN   | NULLABLE |
-
-> This uses a python script `create_bigquery_table.py` to create the table.
-
----
-
-## Roadmap
-
-- [ ] Add Cloud Function to summarize weekly trends
-- [ ] Build a Looker Studio dashboard
