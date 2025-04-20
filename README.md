@@ -46,14 +46,17 @@ This project combines core cloud and analytics engineering tools to build someth
 spotify-data-analyze/
 ├── cloud/
 │   └── playback/
-│       ├── main.py                # Flask app for Cloud Run
-│       ├── Dockerfile             # Container definition
-│       ├── requirements.txt       # Python dependencies
-│       └── deploy.sh              # Manual deploy script
-├── .env                           # Environment variables (Git-ignored)
-├── scripts/                       # Optional utility scripts
+│       ├── main.py
+│       ├── Dockerfile
+│       ├── requirements.txt
+│       └── deploy.sh
+├── scripts/
+│   ├── create_bigquery_table.py            
+│   ├── delete_bigquery_table.py            
+│   └── load_env.py                
+├── .env                           
 └── .github/workflows/
-    └── cloud-deploy.yml           # GitHub Actions CI/CD workflow
+    └── cloud-deploy.yml
 ```
 
 ---
@@ -113,7 +116,7 @@ The destination table should include:
 | popularity    | INTEGER   | NULLABLE |
 | explicit      | BOOLEAN   | NULLABLE |
 
-> You can use `create-bigquery-table.py` to create this table.
+> This uses a python script `create_bigquery_table.py` to create the table.
 
 ---
 
