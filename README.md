@@ -29,14 +29,17 @@ This project combines core cloud and analytics engineering tools to build someth
 
 ---
 
-## Technical Skills Demonstrated
+## Technical Skills
 
-- **Python** for API ingestion and transformation
-- **Cloud Run + Docker** for serverless deployment
-- **GitHub Actions** for CI/CD automation
-- **BigQuery** for cloud-native analytics and schema design
-- **Cloud Scheduler** for orchestrated polling
-- **Environment variable management** for secret handling
+
+
+- Data Pipeline Design: Built a serverless ETL pipeline from Spotify API to BigQuery using Python and Cloud Run
+- Cloud-Native ETL: Extracted, transformed, and loaded data on a schedule using Cloud Scheduler and containerized Flask app
+- Python scripting: Wrote ingestion and transformation logic using the Spotipy library
+- BigQuery: Designed table schema and streamed structured data for analysis
+- Docker + Cloud Run: Packaged and deployed the app as a scalable container
+- CI/CD: Automated deployment via GitHub Actions for reproducibility and version control
+- Environment variable management: Handled secrets securely using .env and GitHub Secrets
 
 ---
 
