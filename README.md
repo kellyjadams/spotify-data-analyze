@@ -2,6 +2,9 @@
 
 This is a personal data project to demonstrate my **data engineering** and **analytics engineering** skills. It automatically logs my Spotify listening history every minute using a **Python app deployed on Google Cloud Run**, storing the data in **BigQuery** for analysis and dashboarding.
 
+This project primarily demonstrates data engineering skills, with a strong emphasis on ETL, orchestration, and cloud infrastructure. It also overlaps with analytics engineering by designing data that's ready for analysis and dashboarding.
+
+
 ---
 
 ## Why I Built This
