@@ -28,12 +28,32 @@ This project brings together core **cloud** and **analytics engineering** tools 
 
 ## Key Features
 
-- Polls Spotify every minute for now-playing tracks
-- Logs detailed track metadata: artist, album, genre, popularity, and more
-- Streams data into BigQuery for historical and real-time analysis
-- Built with a containerized Python app using Flask
-- CI/CD enabled via GitHub Actions
-- Ready for Looker Studio dashboards or custom SQL analytics
+You’re spot on — your current README is already clear and structured, but now that **"Data Lifecycle"** explains the process well, the **Key Features** section feels slightly redundant.
+
+Instead of repeating what’s already covered later, you can reframe **Key Features** into a quick overview with subsections to match the lifecycle. This keeps it **concise** and **aligned** with your pipeline.
+
+Here’s a refactored version 👇
+
+---
+
+## Key Features
+
+### Data Ingestion & Deployment
+- Polls Spotify’s now-playing endpoint every minute using a serverless Cloud Run app
+- Built with a containerized Python app using Flask + Spotipy
+- Deployed manually using a shell script; Cloud Scheduler handles orchestration by triggering the Cloud Run endpoint every minute.
+
+### Data Storage & Modeling
+- Streams listening history into **BigQuery**
+- Cleans and deduplicates plays for session-level analysis
+- Stores detailed metadata: artist, album, genre, popularity, duration
+
+### Analysis & Visualization
+- Designed analysis-ready datasets using **BigQuery SQL**
+- Built a [**Looker Studio dashboard**](https://lookerstudio.google.com/reporting/e2f6d5f3-c3cf-4687-ba01-d3a47a15998c) for:
+  - Listening trends (songs, minutes, heatmap)
+  - Top artists and genres
+  - Average song length
 
 ---
 
@@ -45,7 +65,7 @@ This project brings together core **cloud** and **analytics engineering** tools 
 - **REST API**: Created a lightweight endpoint to trigger ingestion using Flask
 - **BigQuery**: Designed table schema and streamed structured data for analysis
 - **Docker + Cloud Run**: Packaged and deployed the app as a scalable container
-- **CI/CD**: Automated deployment via GitHub Actions for reproducibility and version control
+- **CI/CD**: Automated deployment via GitHub Actions for reproducibility and version control (*work in progress*)
 - **Environment variable management**: Handled secrets securely using `.env` and GitHub Secrets
 
 ---
