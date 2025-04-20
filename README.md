@@ -8,8 +8,6 @@ This is a personal data project focusing on **data engineering** and **analytics
 
 It automatically logs my Spotify listening history every minute and stores it in **BigQuery** for analysis.
 
----
-
 ## Why I Built This
 
 At the end of the year, I want to compare what's logged in BigQuery with my annual **Spotify Wrapped**.
@@ -23,18 +21,6 @@ I wanted to explore how to:
 - Design pipelines that are scalable and support near real-time insights
 
 This project brings together core **cloud** and **analytics engineering** tools to build something end-to-end—from ingestion to analysis.
-
----
-
-## Key Features
-
-You’re spot on — your current README is already clear and structured, but now that **"Data Lifecycle"** explains the process well, the **Key Features** section feels slightly redundant.
-
-Instead of repeating what’s already covered later, you can reframe **Key Features** into a quick overview with subsections to match the lifecycle. This keeps it **concise** and **aligned** with your pipeline.
-
-Here’s a refactored version 👇
-
----
 
 ## Key Features
 
@@ -55,8 +41,6 @@ Here’s a refactored version 👇
   - Top artists and genres
   - Average song length
 
----
-
 ## Technical Skills
 
 - **Data Pipeline Design**: Built a serverless ETL pipeline from Spotify API to BigQuery using Python and Cloud Run
@@ -67,8 +51,6 @@ Here’s a refactored version 👇
 - **Docker + Cloud Run**: Packaged and deployed the app as a scalable container
 - **CI/CD**: Automated deployment via GitHub Actions for reproducibility and version control (*work in progress*)
 - **Environment variable management**: Handled secrets securely using `.env` and GitHub Secrets
-
----
 
 ## Project Structure
 
@@ -99,9 +81,6 @@ spotify-data-analyze/
 └── .github/workflows/
     └── cloud-deploy.yml
 ```
-
----
-
 
 ## Environment & Deployment
 
