@@ -74,7 +74,17 @@ Here’s a refactored version 👇
 
 ```
 spotify-data-analyze/
+spotify-data-analyze/
 ├── analysis/
+│   ├── queries/
+│   │   ├── all_artists.sql
+│   │   ├── all_genres.sql
+│   │   └── heatmap_songs.sql
+│   │   └── listening_over_time.sql
+│   │   └── songs_played_over_time.sql
+│   │   └── top_kpis.sql
+│   ├── views/
+│   │   ├── deduped_plays_pacific.sql
 ├── cloud/
 │   └── playback/
 │       ├── main.py
