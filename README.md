@@ -1,4 +1,4 @@
-# Spotify Listening Logger (Cloud Run + BigQuery)
+# Spotify Listening Logger
 
 
 This is a personal data project focusing on **data engineering** and **analytics engineering** skills.
@@ -28,22 +28,20 @@ This project brings together core **cloud** and **analytics engineering** tools 
 
 ## Key Features
 
-### Data Ingestion & Deployment
-- Polls Spotify’s now-playing endpoint every minute using a serverless Cloud Run app
-- Built with a containerized Python app using Flask + Spotipy
-- Deployed manually using a shell script; Cloud Scheduler handles orchestration by triggering the Cloud Run endpoint every minute.
-
-### Data Storage & Modeling
-- Streams listening history into **BigQuery**
-- Cleans and deduplicates plays for session-level analysis
-- Stores detailed metadata: artist, album, genre, popularity, duration
-
-### Analysis & Visualization
-- Designed analysis-ready datasets using **BigQuery SQL**
-- Built a [**Looker Studio dashboard**](https://lookerstudio.google.com/reporting/e2f6d5f3-c3cf-4687-ba01-d3a47a15998c) for:
-  - Listening trends (songs, minutes, heatmap)
-  - Top artists and genres
-  - Average song length
+- **Data Ingestion & Deployment**
+  - Polls Spotify’s now-playing endpoint every minute using a serverless Cloud Run app
+  - Built with a containerized Python app using Flask + Spotipy
+  - Deployed manually using a shell script; Cloud Scheduler handles orchestration by triggering the Cloud Run endpoint every minute.
+- **Data Storage & Modeling**
+  - Streams listening history into **BigQuery**
+  - Cleans and deduplicates plays for session-level analysis
+  - Stores detailed metadata: artist, album, genre, popularity, duration
+- **Analysis & Visualization**
+  - Designed analysis-ready datasets using **BigQuery SQL**
+  - Built a [**Looker Studio dashboard**](https://lookerstudio.google.com/reporting/e2f6d5f3-c3cf-4687-ba01-d3a47a15998c) for:
+    - Listening trends (songs, minutes, heatmap)
+    - Top artists and genres
+    - Average song length
 
 ## Technical Skills
 
