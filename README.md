@@ -10,7 +10,6 @@ It automatically logs my Spotify listening history every minute and stores it in
 
 Links: 
 - [Blog Post](https://www.kellyjadams.com/post/spotify-listening-logger)
-- [Looker Studio Dashboard](https://lookerstudio.google.com/reporting/e2f6d5f3-c3cf-4687-ba01-d3a47a15998c)
 
 ## Why I Built This
 
@@ -38,10 +37,6 @@ This project brings together core **cloud** and **analytics engineering** tools 
   - Stores detailed metadata: artist, album, genre, popularity, duration
 - **Analysis & Visualization**
   - Designed analysis-ready datasets using **BigQuery SQL**
-  - Built a [**Looker Studio dashboard**](https://lookerstudio.google.com/reporting/e2f6d5f3-c3cf-4687-ba01-d3a47a15998c) for:
-    - Listening trends (songs, minutes, heatmap)
-    - Top artists and genres
-    - Average song length
 
 ## Technical Skills
 
@@ -51,7 +46,6 @@ This project brings together core **cloud** and **analytics engineering** tools 
 - **REST API**: Created a lightweight endpoint to trigger ingestion using Flask
 - **BigQuery**: Designed table schema and streamed structured data for analysis
 - **Docker + Cloud Run**: Packaged and deployed the app as a scalable container
-- **CI/CD**: Automated deployment via GitHub Actions for reproducibility and version control (*work in progress*)
 - **Environment variable management**: Handled secrets securely using `.env` and GitHub Secrets
 
 ## Project Structure
@@ -60,12 +54,6 @@ This project brings together core **cloud** and **analytics engineering** tools 
 spotify-data-analyze/
 ├── analysis/
 │   ├── queries/
-│   │   ├── all_artists.sql
-│   │   ├── all_genres.sql
-│   │   └── heatmap_songs.sql
-│   │   └── listening_over_time.sql
-│   │   └── songs_played_over_time.sql
-│   │   └── top_kpis.sql
 │   ├── views/
 │   │   ├── deduped_plays_pacific.sql
 ├── cloud/
@@ -98,3 +86,9 @@ I automated ingestion, by setting up a **Cloud Scheduler** job to hit the app en
 
 The data is stored in a **BigQuery** table with fields like `track`, `artist`, `genre`, and `popularity`. See `create_bigquery_table.py` for schema setup.
 
+## Next Steps
+
+Below are my next steps:
+- Automate CI/CD deployment via GitHub Actions
+- Finalize my Looker Studio Dashboard that automatically retrieves data from my BigQuery tables
+- Analyze stats using BigQuery SQL queries 
